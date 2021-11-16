@@ -11,11 +11,11 @@ namespace Saitynas1Lab.Data.Repositories
 {
     public interface IPostsRepository
     {
-        Task<Post> Create(Post post);
-        Task<Post> Delete(Post post);
+        Task Create(Post post);
+        Task Delete(Post post);
         Task<Post> Get(int id);
         Task<IEnumerable<Post>> GetAll();
-        Task<Post> Put(Post post);
+        Task Put(Post post);
     }
 
     //public interface IPostsRepository
@@ -47,67 +47,75 @@ namespace Saitynas1Lab.Data.Repositories
 
         public async Task<IEnumerable<Post>> GetAll()
         {
-            return new List<Post>
-            {
-                new Post()
-                {
-                    Id = 0,
-                    GameName = "name",
-                    Price = 225,
+            return await _demoRestContext.Posts.ToListAsync();
+        //    return new List<Post>
+        //    {
+        //        new Post()
+        //        {
+        //            Id = 0,
+        //            GameName = "name",
+        //            Price = 225,
 
-                    Body = "body",
-                    CreationDateUtc = DateTime.UtcNow
-                },
-                new Post()
-                {
-                    Id = 0,
-                    GameName = "name",
-                    Price = 225,
+            //            Body = "body",
+            //            CreationDateUtc = DateTime.UtcNow
+            //        },
+            //        new Post()
 
-                    Body = "body",
-                    CreationDateUtc = DateTime.UtcNow
-        }
-            };
+            //        {
+            //            Id = 0,
+            //            GameName = "name",
+            //            Price = 225,
+
+            //            Body = "body",
+            //            CreationDateUtc = DateTime.UtcNow
+            //}
+            //    };
         }
 
         public async Task<Post> Get(int id)
         {
-            return new Post()
-            {
-                Id = 0,
-                GameName = "name",
-                Price = 225,
+            //return new Post()
+            //{
+            //    Id = 0,
+            //    GameName = "name",
+            //    Price = 225,
 
-                Body = "body",
-                CreationDateUtc = DateTime.UtcNow
-            };
+            //    Body = "body",
+            //    CreationDateUtc = DateTime.UtcNow
+            //};
+            return await _demoRestContext.Posts.FirstOrDefaultAsync(o => o.Id == id);
         }
 
-        public async Task<Post> Create(Post post)
+        public async Task Create(Post post)
         {
             _demoRestContext.Posts.Add(post);
+            await _demoRestContext.SaveChangesAsync();
             //await _demoRestContext.SaveChangesAsync();
             //Response.StatusCode = (int)HttpStatusCode.Created;
 
-            return post;
+            
         }
 
-        public async Task<Post> Put(Post post)
+        public async Task Put(Post post)
         {
-            return new Post()
-            {
-                Id = 0,
-                GameName = "name",
-                Price = 225,
+            //return new Post()
+            //{
+            //    Id = 0,
+            //    GameName = "name",
+            //    Price = 225,
 
-                Body = "body",
-                CreationDateUtc = DateTime.UtcNow
-            };
+            //    Body = "body",
+            //    CreationDateUtc = DateTime.UtcNow
+            //};
+            _demoRestContext.Posts.Update(post);
+            await _demoRestContext.SaveChangesAsync();
         }
 
-        public async Task<Post> Delete(Post post)
+        public async Task Delete(Post post)
         {
-            return post;
+            _demoRestContext.Posts.Remove(post);
+            await _demoRestContext.SaveChangesAsync();
+            
         }
     }
 }

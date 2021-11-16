@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\VisualStudio\\Saitynai1Lab\\Saitynas1Lab\\Saitynas1Lab.csproj": {}
+    "C:\\Users\\šienuks\\Documents\\GitHub\\saitynas2Lab\\Saitynas1Lab\\Saitynas1Lab.csproj": {}
   },
   "projects": {
-    "D:\\VisualStudio\\Saitynai1Lab\\Saitynas1Lab\\Saitynas1Lab.csproj": {
+    "C:\\Users\\šienuks\\Documents\\GitHub\\saitynas2Lab\\Saitynas1Lab\\Saitynas1Lab.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\VisualStudio\\Saitynai1Lab\\Saitynas1Lab\\Saitynas1Lab.csproj",
+        "projectUniqueName": "C:\\Users\\šienuks\\Documents\\GitHub\\saitynas2Lab\\Saitynas1Lab\\Saitynas1Lab.csproj",
         "projectName": "Saitynas1Lab",
-        "projectPath": "D:\\VisualStudio\\Saitynai1Lab\\Saitynas1Lab\\Saitynas1Lab.csproj",
+        "projectPath": "C:\\Users\\šienuks\\Documents\\GitHub\\saitynas2Lab\\Saitynas1Lab\\Saitynas1Lab.csproj",
         "packagesPath": "C:\\Users\\šienuks\\.nuget\\packages\\",
-        "outputPath": "D:\\VisualStudio\\Saitynai1Lab\\Saitynas1Lab\\obj\\",
+        "outputPath": "C:\\Users\\šienuks\\Documents\\GitHub\\saitynas2Lab\\Saitynas1Lab\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -54,6 +54,14 @@
             "Azure.Core": {
               "target": "Package",
               "version": "[1.20.0, )"
+            },
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.4, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.10, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",

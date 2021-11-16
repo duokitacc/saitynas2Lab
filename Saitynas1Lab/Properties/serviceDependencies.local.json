@@ -4,8 +4,15 @@
       "type": "secrets.user"
     },
     "mssql1": {
+      "resourceId": null,
       "type": "mssql.local",
       "connectionId": "MyDbConnection",
+      "secretStore": "LocalSecretsFile"
+    },
+    "mssql2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/gamesdatabase/databases/Saitynas1Lab_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:MyDbConnection",
       "secretStore": "LocalSecretsFile"
     }
   }

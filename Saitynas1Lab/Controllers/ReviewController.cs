@@ -27,45 +27,30 @@ namespace Saitynas1Lab.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Review>> GetAllAsync(int postId)
+        public async Task<List<Review>> GetAllAsync(int postId)
         {
-            
-            var posts = await _reviewRepository.GetAsync(postId);
-            Console.WriteLine("praejooooom");
-            //return posts;
-            //return new List<Review>
-            //{
-            //    new Review()
-            //{
-            //    Initiator = "inic",
-            //    Title = "title",
-            //    Body = "body",
-            //    CreationDateUtc = DateTime.UtcNow
 
-            //},
-            //    new Review()
-            //{
-            //    Initiator = "inic",
-            //    Title = "title",
-            //    Body = "body",
-            //    CreationDateUtc = DateTime.UtcNow
-
-            //} };
-            return posts;
-            //return posts.Select(o => _mapper.Map<ReviewDto>(o));
+            _PostsRepository
         }
 
         // /api/topics/1/posts/2
         [HttpGet("{postId}")]
         public async Task<ActionResult<ReviewDto>> GetAsync(int postId, int reviewId)
         {
-            var post = await _reviewRepository.GetAsync(postId, reviewId);
-            if (post == null) return NotFound();
+            var post = await _PostsRepository.Get(postId);
+            if (post == null)
+            {
+                return NotFound($"Post with id '{postId}' not found.");
+            }
+            var reviews = await _ingredientsRepository.GetAsync(recipeId, ingredientId);
+            if (reviews == null)
+            {
+                return NotFound($"Ingredient with id '{ingredientId}' not found.");
+            }
+            var ingredients = await _suppliersRepository.GetAllAsync(ingredientId);
+            return Ok(ingredients.Select(o => _mapper.Map<SupplierDto>(o)));
 
-            return Ok(_mapper.Map<ReviewDto>(post));
-        }
-
-        [HttpPost]
+            [HttpPost]
         public async Task<ActionResult<ReviewDto>> PostAsync(int postId, CreateReviewDto reviewDto)
         {
             var post = await _PostsRepository.Get(postId);

@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sitemanifest>
-  <IisApp path="D:\VisualStudio\Saitynai1Lab\Saitynas1Lab\obj\Release\net5.0\PubTmp\Out\" />
+  <IisApp path="C:\Users\šienuks\Documents\GitHub\saitynas2Lab\Saitynas1Lab\obj\Release\net5.0\PubTmp\Out\" />
+  <dbfullsql path="C:\Users\šienuks\Documents\GitHub\saitynas2Lab\Saitynas1Lab\obj\Release\net5.0\PubTmp\EFSQLScripts\Saitynas1Lab.Data.DemoRestContext.sql" />
 </sitemanifest>

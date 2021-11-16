@@ -6,6 +6,7 @@ using Saitynas1Lab.Data.Dtos.Posts;
 using Saitynas1Lab.Data.Entities;
 using Saitynas1Lab.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Saitynas1Lab.Controllers
 {
@@ -27,6 +28,7 @@ namespace Saitynas1Lab.Controllers
         [HttpGet]
         public async Task<IEnumerable<PostDto>> GetAll()
         {
+            Console.WriteLine("belekas");
             return (await _postsRepository.GetAll()).Select(o => _mapper.Map<PostDto>(o));
         }
 

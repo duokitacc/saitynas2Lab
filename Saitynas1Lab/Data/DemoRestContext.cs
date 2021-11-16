@@ -5,7 +5,7 @@ namespace Saitynas1Lab.Data
 {
     public class DemoRestContext : DbContext
     {
-        
+
         public DbSet<Post> Posts { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
@@ -14,7 +14,8 @@ namespace Saitynas1Lab.Data
         {
             // !!! DON'T STORE THE REAL CONNECTION STRING THE IN PUBLIC REPO !!!
             // Use secret managers provided by your chosen cloud provider
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=RestDemo2");
+            //optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=RestDemo2");
+            optionsBuilder.UseSqlServer("Data Source=tcp:saitynas1labdbserver.database.windows.net,1433;Initial Catalog=Saitynas1Lab_db;User Id=jonsei@saitynas1labdbserver;Password=qwerty12.");
         }
     }
 }

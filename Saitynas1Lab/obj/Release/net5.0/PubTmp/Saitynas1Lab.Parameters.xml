@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
   <parameter name="IIS Web Application Name" description="" value="jonoAzzure" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^D:\\VisualStudio\\Saitynai1Lab\\Saitynas1Lab\\obj\\Release\\net5\.0\\PubTmp\\Out\\$" />
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\šienuks\\Documents\\GitHub\\saitynas2Lab\\Saitynas1Lab\\obj\\Release\\net5\.0\\PubTmp\\Out\\$" />
+  </parameter>
+  <parameter name="Saitynas1Lab.Data.DemoRestContext" description="" value="Data Source=tcp:saitynas1labdbserver.database.windows.net,1433;Initial Catalog=Saitynas1Lab_db;User Id=jonsei@saitynas1labdbserver;Password=qwerty12." tags="dbfullsql">
+    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^C:\\Users\\šienuks\\Documents\\GitHub\\saitynas2Lab\\Saitynas1Lab\\obj\\Release\\net5\.0\\PubTmp\\EFSQLScripts\\Saitynas1Lab\.Data\.DemoRestContext\.sql$" />
   </parameter>
 </parameters>
