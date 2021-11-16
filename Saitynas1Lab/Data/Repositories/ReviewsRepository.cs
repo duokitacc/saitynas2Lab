@@ -10,7 +10,7 @@ namespace Saitynas1Lab.Data.Repositories
     public interface IReviewsRepository
     {
         Task DeleteAsync(Review review);
-        Task<List<Review>> GetAsync(int postId);
+        Task<List<Review>> GetAllAsync(int postId);
         Task<Review> GetAsync(int postId, int reviewId);
         Task InsertAsync(Review review);
         Task UpdateAsync(Review review);
@@ -50,29 +50,11 @@ namespace Saitynas1Lab.Data.Repositories
             //};
         }
 
-        public async Task<List<Review>> GetAsync(int postId)
+        public async Task<List<Review>> GetAllAsync(int postId)
         {
             return await _demoRestContext.Reviews.Where(o => o.PostId == postId).ToListAsync();
 
-            //return new List<Review>
-            //{
-            //    new Review()
-            //{
-            //    Initiator = "inic",
-            //    Title = "title",
-            //    Body = "body",
-            //    CreationDateUtc = DateTime.UtcNow
-
-            //},
-            //    new Review()
-            //{
-            //    Initiator = "inic",
-            //    Title = "title",
-            //    Body = "body",
-            //    CreationDateUtc = DateTime.UtcNow
-
-            //} };
-
+            
         }
 
         public async Task InsertAsync(Review review)

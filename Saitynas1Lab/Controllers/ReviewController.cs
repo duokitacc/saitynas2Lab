@@ -27,50 +27,59 @@ namespace Saitynas1Lab.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Review>> GetAllAsync(int postId)
+        public async Task<ActionResult<List<Review>>> GetAllAsync(int id)
         {
 
-            _PostsRepository
+            var post = await _PostsRepository.Get(id);
+            if (post == null)
+            {
+                return NotFound($"Post with id '{id}' not found.");
+            }
+            var reviews = await _reviewRepository.GetAllAsync(id);
+            if (reviews == null)
+            {
+                return NotFound($"Ingredient with id '{reviews}' not found.");
+            }
+
+
+            return Ok(reviews.Select(o => _mapper.Map<Review>(o)));
         }
 
         // /api/topics/1/posts/2
-        [HttpGet("{postId}")]
-        public async Task<ActionResult<ReviewDto>> GetAsync(int postId, int reviewId)
+        [HttpGet("{reviewId}")]
+        public async Task<ActionResult<ReviewDto>> GetAsync(int id, int reviewId)
         {
-            var post = await _PostsRepository.Get(postId);
-            if (post == null)
-            {
-                return NotFound($"Post with id '{postId}' not found.");
-            }
-            var reviews = await _ingredientsRepository.GetAsync(recipeId, ingredientId);
+
+            var reviews = await _reviewRepository.GetAsync(id, reviewId);
             if (reviews == null)
             {
-                return NotFound($"Ingredient with id '{ingredientId}' not found.");
+                return NotFound($"Reviews with post  id '{id}' and review id '{reviewId}'not found.");
             }
-            var ingredients = await _suppliersRepository.GetAllAsync(ingredientId);
-            return Ok(ingredients.Select(o => _mapper.Map<SupplierDto>(o)));
+           
+            return Ok(_mapper.Map<Review>(reviews));
+        }
 
-            [HttpPost]
-        public async Task<ActionResult<ReviewDto>> PostAsync(int postId, CreateReviewDto reviewDto)
+        [HttpPost]
+        public async Task<ActionResult<ReviewDto>> PostAsync(int id, CreateReviewDto reviewDto)
         {
-            var post = await _PostsRepository.Get(postId);
-            if (post == null) return NotFound($"Couldn't find a post with id of {postId}");
+            var post = await _PostsRepository.Get(id);
+            if (post == null) return NotFound($"Couldn't find a post with id of {id}");
 
             var review = _mapper.Map<Review>(reviewDto);
-            review.PostId = postId;
+            review.PostId = id;
 
             await _reviewRepository.InsertAsync(review);
 
-            return Created($"/api/posts/{postId}/reviews/{review.Id}", _mapper.Map<PostDto>(post));
+            return Created($"/api/posts/{id}/reviews/{review.Id}", _mapper.Map<PostDto>(post));
         }
 
         [HttpPut("{reviewId}")]
-        public async Task<ActionResult<ReviewDto>> PostAsync(int postId, int reviewId, UpdateReviewDto reviwDto)
+        public async Task<ActionResult<ReviewDto>> PostAsync(int id, int reviewId, UpdateReviewDto reviwDto)
         {
-            var topic = await _PostsRepository.Get(postId);
-            if (topic == null) return NotFound($"Couldn't find a post with id of {postId}");
+            var topic = await _PostsRepository.Get(id);
+            if (topic == null) return NotFound($"Couldn't find a post with id of {id}");
 
-            var oldPost = await _reviewRepository.GetAsync(postId, reviewId);
+            var oldPost = await _reviewRepository.GetAsync(id, reviewId);
             if (oldPost == null)
                 return NotFound();
 
@@ -83,14 +92,14 @@ namespace Saitynas1Lab.Controllers
         }
 
         [HttpDelete("{reviewId}")]
-        public async Task<ActionResult> DeleteAsync(int postId, int reviewId)
+        public async Task<ActionResult> DeleteAsync(int id, int reviewId)
         {
-            var post = await _reviewRepository.GetAsync(postId, reviewId);
+            var post = await _reviewRepository.GetAsync(id, reviewId);
             if (post == null)
                 return NotFound();
 
             await _reviewRepository.DeleteAsync(post);
-
+            
             // 204
             return NoContent();
         }
