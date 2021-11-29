@@ -30,16 +30,17 @@ namespace Saitynas1Lab.Controllers
         public async Task<IEnumerable<OrderDto>> GetAll()
         {
             return (await _ordersRepository.GetAll()).Select(o => _mapper.Map<OrderDto>(o));
+            
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> Get(int id)
         {
-            var topic = await _ordersRepository.Get(id);
-            if (topic == null) return NotFound($"Topic with id '{id}' not found.");
+            var order = await _ordersRepository.Get(id);
+            if (order == null) return NotFound($"Topic with id '{id}' not found.");
 
             //return _mapper.Map<TopicDto>(topic);
-            return Ok(_mapper.Map<OrderDto>(topic));
+            return Ok(_mapper.Map<OrderDto>(order));
         }
 
         [HttpPost]

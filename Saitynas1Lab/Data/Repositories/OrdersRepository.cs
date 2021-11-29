@@ -14,7 +14,7 @@ namespace Saitynas1Lab.Data.Repositories
         Task Create(Order order);
         Task Delete(Order post);
         Task<Order> Get(int id);
-        Task<List<Order>> GetAll();
+        Task<IEnumerable<Order>> GetAll();
         Task Put(Order post);
     }
 
@@ -27,7 +27,7 @@ namespace Saitynas1Lab.Data.Repositories
             _demoRestContext = demoRestContext;
         }
 
-        public async Task<List<Order>> GetAll()
+        public async Task<IEnumerable<Order>> GetAll()
         {
             return await _demoRestContext.Orders.ToListAsync();
            

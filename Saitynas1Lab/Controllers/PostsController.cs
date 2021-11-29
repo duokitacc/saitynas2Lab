@@ -28,7 +28,7 @@ namespace Saitynas1Lab.Controllers
         [HttpGet]
         public async Task<IEnumerable<PostDto>> GetAll()
         {
-            Console.WriteLine("belekas");
+            
             return (await _postsRepository.GetAll()).Select(o => _mapper.Map<PostDto>(o));
         }
 
