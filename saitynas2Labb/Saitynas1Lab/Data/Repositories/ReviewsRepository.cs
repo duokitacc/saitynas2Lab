@@ -9,12 +9,21 @@ namespace Saitynas1Lab.Data.Repositories
 {
     public interface IReviewsRepository
     {
-        Task<Review> DeleteAsync(Review review);
+        Task DeleteAsync(Review review);
         Task<List<Review>> GetAsync(int postId);
         Task<Review> GetAsync(int postId, int reviewId);
         Task<Review> InsertAsync(Review review);
         Task<Review> UpdateAsync(Review review);
     }
+
+    //public interface IReviewsRepository
+    //{
+    //    Task<Review> DeleteAsync(Review review);
+    //    Task<List<Review>> GetAsync(int postId);
+    //    Task<Review> GetAsync(int postId, int reviewId);
+    //    Task<Review> InsertAsync(Review review);
+    //    Task<Review> UpdateAsync(Review review);
+    //}
 
 
     //public interface IReviewsRepository
@@ -38,62 +47,47 @@ namespace Saitynas1Lab.Data.Repositories
         }
         public async Task<Review> GetAsync(int postId, int reviewId)
         {
-            //return await _demoRestContext.Reviews.FirstOrDefaultAsync(o => o.PostId == postId && o.Id == reviewId);
-            return new Review()
-            {
-                Initiator = "inic",
-                Title = "title",
-                Body = "body",
-                CreationDateUtc = DateTime.UtcNow
+            return await _demoRestContext.Reviews.FirstOrDefaultAsync(o => o.PostId == postId && o.Id == reviewId);
+            //return new Review()
+            //{
+            //    Initiator = "inic",
+            //    Title = "title",
+            //    Body = "body",
+            //    CreationDateUtc = DateTime.UtcNow
 
-            };
+            //};
         }
 
         public async Task<List<Review>> GetAsync(int postId)
         {
-            //return await _demoRestContext.Reviews.Where(o => o.PostId == postId).ToListAsync();
+            return await _demoRestContext.Reviews.Where(o => o.PostId == postId).ToListAsync();
 
-            return new List<Review>
-            {
-                new Review()
-            {
-                Initiator = "inic",
-                Title = "title",
-                Body = "body",
-                CreationDateUtc = DateTime.UtcNow
 
-            },
-                new Review()
-            {
-                Initiator = "inic",
-                Title = "title",
-                Body = "body",
-                CreationDateUtc = DateTime.UtcNow
-
-            } };
 
         }
 
         public async Task<Review> InsertAsync(Review review)
         {
             _demoRestContext.Reviews.Add(review);
+            await _demoRestContext.SaveChangesAsync();
             return review;
-            //await _demoRestContext.SaveChangesAsync();
+
         }
 
         public async Task<Review> UpdateAsync(Review review)
         {
             _demoRestContext.Reviews.Update(review);
+            await _demoRestContext.SaveChangesAsync();
             return review;
-            //await _demoRestContext.SaveChangesAsync();
+
         }
 
-        public async Task<Review> DeleteAsync(Review review)
+        public async Task DeleteAsync(Review review)
         {
-            //_demoRestContext.Reviews.Remove(review);
+            _demoRestContext.Reviews.Remove(review);
+            await _demoRestContext.SaveChangesAsync();
+            //return review;
 
-            return review;
-            //await _demoRestContext.SaveChangesAsync();
         }
     }
 }

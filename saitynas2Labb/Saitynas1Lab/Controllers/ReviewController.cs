@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Saitynas1Lab.Data.Dtos.Posts;
 using Saitynas1Lab.Data.Dtos.Reviews;
 using Saitynas1Lab.Data.Entities;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Saitynas1Lab.Auth.Model;
 
 namespace Saitynas1Lab.Controllers
 {
@@ -18,19 +20,21 @@ namespace Saitynas1Lab.Controllers
         private readonly IReviewsRepository _reviewRepository;
         private readonly IMapper _mapper;
         private readonly IPostsRepository _PostsRepository;
+        private readonly IAuthorizationService _authorizationService;
 
-        public ReviewController(IReviewsRepository reviewRepository, IMapper mapper, IPostsRepository postsRepository)
+        public ReviewController(IReviewsRepository reviewRepository, IMapper mapper, IPostsRepository postsRepository, IAuthorizationService authorizationService)
         {
             _reviewRepository = reviewRepository;
             _mapper = mapper;
             _PostsRepository = postsRepository;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Review>> GetAllAsync(int postId)
+        public async Task<IEnumerable<Review>> GetAllAsync(int id)
         {
             
-            var posts = await _reviewRepository.GetAsync(postId);
+            var posts = await _reviewRepository.GetAsync(id);
             Console.WriteLine("praejooooom");
             //return posts;
             //return new List<Review>
@@ -66,45 +70,84 @@ namespace Saitynas1Lab.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ReviewDto>> PostAsync(int postId, CreateReviewDto reviewDto)
+        public async Task<ActionResult<ReviewDto>> PostAsync(int id, CreateReviewDto reviewDto)
         {
-            var post = await _PostsRepository.Get(postId);
-            if (post == null) return NotFound($"Couldn't find a post with id of {postId}");
+            var userId = User.Claims.ToList()[2].Value;
+            var post = await _PostsRepository.Get(id);
+            if (post == null) return NotFound($"Couldn't find a post with id of {id}");
+            if (!User.Identity.IsAuthenticated)
+            {
+                return BadRequest("Negalite sukurti įrašo neprisijungęs. Prisijunkite");
+            }
+            
+
+            //var authorizationResult = await _authorizationService.AuthorizeAsync(User, post, PolicyNames.SameUser);
+            //if (!authorizationResult.Succeeded && !User.IsInRole(DemoRestUserRoles.Admin))
+            //{
+            //    //403 or 404
+            //    return Forbid();
+            //}
 
             var review = _mapper.Map<Review>(reviewDto);
-            review.PostId = postId;
-
+            review.PostId = id;
+            review.Initiator = User.Identity.Name;
+            review.UserId = userId;
             await _reviewRepository.InsertAsync(review);
 
-            return Created($"/api/posts/{postId}/reviews/{review.Id}", _mapper.Map<PostDto>(post));
+            return Created($"/api/posts/{id}/reviews/{review.Id}", _mapper.Map<ReviewDto>(review));
         }
 
         [HttpPut("{reviewId}")]
-        public async Task<ActionResult<ReviewDto>> PostAsync(int postId, int reviewId, UpdateReviewDto reviwDto)
+        public async Task<ActionResult<ReviewDto>> PutAsync(int id, int reviewId, UpdateReviewDto reviwDto)
         {
-            var topic = await _PostsRepository.Get(postId);
-            if (topic == null) return NotFound($"Couldn't find a post with id of {postId}");
+            var post = await _PostsRepository.Get(id);
+            if (post == null) return NotFound($"Couldn't find a post with id of {id}");
+            if (!User.Identity.IsAuthenticated)
+            {
+                return BadRequest("Negalite sukurti įrašo neprisijungęs. Prisijunkite");
+            }
+           
 
-            var oldPost = await _reviewRepository.GetAsync(postId, reviewId);
-            if (oldPost == null)
+            
+            var review = await _reviewRepository.GetAsync(id, reviewId);
+            if (review == null)
                 return NotFound();
-
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, review, PolicyNames.SameUser);
+            if (!authorizationResult.Succeeded && !User.IsInRole(DemoRestUserRoles.Admin))
+            {
+                //403 or 404
+                return Forbid();
+            }
             //oldPost.Body = postDto.Body;
-            _mapper.Map(reviwDto, oldPost);
+            _mapper.Map(reviwDto, review);
+            
 
-            await _reviewRepository.UpdateAsync(oldPost);
+            await _reviewRepository.UpdateAsync(review);
 
-            return Ok(_mapper.Map<ReviewDto>(oldPost));
+            return Ok(_mapper.Map<ReviewDto>(review));
         }
 
         [HttpDelete("{reviewId}")]
-        public async Task<ActionResult> DeleteAsync(int postId, int reviewId)
+        public async Task<ActionResult> DeleteAsync(int id, int reviewId)
         {
-            var post = await _reviewRepository.GetAsync(postId, reviewId);
+            var post = await _PostsRepository.Get(id);
             if (post == null)
                 return NotFound();
-
-            await _reviewRepository.DeleteAsync(post);
+            var review = await _reviewRepository.GetAsync(id, reviewId);
+            if (review == null)
+                return NotFound();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return BadRequest("Negalite sukurti įrašo neprisijungęs. Prisijunkite");
+            }
+            
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, review, PolicyNames.SameUser);
+            if (!authorizationResult.Succeeded && !User.IsInRole(DemoRestUserRoles.Admin))
+            {
+                //403 or 404
+                return Forbid();
+            }
+            await _reviewRepository.DeleteAsync(review);
 
             // 204
             return NoContent();

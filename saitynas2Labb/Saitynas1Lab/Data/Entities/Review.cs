@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Saitynas1Lab.Auth.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Saitynas1Lab.Data.Entities
 {
-    public class Review
+    public class Review : IUserOwnedResource
     {
         public int Id { get; set; }
         public string Initiator { get; set; }
@@ -16,6 +17,7 @@ namespace Saitynas1Lab.Data.Entities
 
         
         public int PostId { get; set; }
+        public string UserId { get; set; }
 
 
 

@@ -12,6 +12,8 @@ namespace Saitynas1Lab.Data.Entities
         public int Price { get; set; }
         public string Body { get; set; }
         public DateTime CreationDateUtc { get; set; }
+
+        
         
 
     }

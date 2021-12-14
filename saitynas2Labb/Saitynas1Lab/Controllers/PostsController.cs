@@ -55,12 +55,13 @@ namespace Saitynas1Lab.Controllers
         {
             //var userId = User.Identity.GetUserId();
             //var userId = User.Claims.Last().Value;
-            var userId = User.Claims.ToList()[2].Value;
-
-            if (userId == null)
+            
+            
+            if (!User.Identity.IsAuthenticated)
             {
                 return BadRequest("Negalite sukurti įrašo neprisijungęs. Prisijunkite");
             }
+            var userId = User.Claims.ToList()[2].Value;
             var post = _mapper.Map<Post>(postDto);
             Console.WriteLine("UserID:  " + userId);
 
@@ -77,8 +78,11 @@ namespace Saitynas1Lab.Controllers
         public async Task<ActionResult<PostDto>> Put(int id, UpdatePostDto postDto)
         {
             var post = await _postsRepository.Get(id);
-            if (post == null) return NotFound($"Topic with id '{id}' not found.");
-
+            if (post == null) return NotFound($"Posts with id '{id}' not found.");
+            if (!User.Identity.IsAuthenticated)
+            {
+                return BadRequest("Negalite sukurti įrašo neprisijungęs. Prisijunkite");
+            }
             var authorizationResult = await _authorizationService.AuthorizeAsync(User, post, PolicyNames.SameUser);
             if (!authorizationResult.Succeeded && !User.IsInRole(DemoRestUserRoles.Admin))
             {
@@ -98,7 +102,12 @@ namespace Saitynas1Lab.Controllers
         public async Task<ActionResult<PostDto>> Delete(int id)
         {
             var post = await _postsRepository.Get(id);
-            if (post == null) return NotFound($"Topic with id '{id}' not found.");
+            if (post == null) return NotFound($"Post with id '{id}' not found.");
+            if(!User.Identity.IsAuthenticated)
+            {
+                return BadRequest("Negalite ištrinti įrašo neprisijungęs. Prisijunkite");
+            }
+            //
             var authorizationResult = await _authorizationService.AuthorizeAsync(User, post, PolicyNames.SameUser);
             if (!authorizationResult.Succeeded && !User.IsInRole(DemoRestUserRoles.Admin))
             {

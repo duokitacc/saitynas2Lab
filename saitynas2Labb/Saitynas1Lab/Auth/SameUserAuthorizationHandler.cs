@@ -11,6 +11,7 @@ namespace Saitynas1Lab.Auth
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, SameUserRequirement requirement, IUserOwnedResource resource)
         {
+            
             if (context.User.IsInRole(DemoRestUserRoles.Admin) || context.User.FindFirst(CustomClaims.UserId).Value == resource.UserId)
             {
                 context.Succeed(requirement);

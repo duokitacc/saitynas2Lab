@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Saitynas1Lab.Data;
 
 namespace Saitynas1Lab.Migrations
 {
     [DbContext(typeof(DemoRestContext))]
-    partial class DemoRestContextModelSnapshot : ModelSnapshot
+    [Migration("20211214140747_user_Id_For_Reviews")]
+    partial class user_Id_For_Reviews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

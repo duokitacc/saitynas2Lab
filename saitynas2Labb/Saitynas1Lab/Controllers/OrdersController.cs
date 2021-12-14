@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Saitynas1Lab.Auth.Model;
 using Saitynas1Lab.Data.Dtos.Orders;
 using Saitynas1Lab.Data.Entities;
 using Saitynas1Lab.Data.Repositories;
@@ -17,7 +19,7 @@ namespace Saitynas1Lab.Controllers
 
         private readonly IOrdersRepository _ordersRepository;
         private readonly IMapper _mapper;
-        //private readonly ITopicsRepository _topicsRepository;
+        
 
         public OrdersController(IOrdersRepository ordersRepository, IMapper mapper)
         {
@@ -36,7 +38,7 @@ namespace Saitynas1Lab.Controllers
         public async Task<ActionResult<OrderDto>> Get(int id)
         {
             var topic = await _ordersRepository.Get(id);
-            if (topic == null) return NotFound($"Topic with id '{id}' not found.");
+            if (topic == null) return NotFound($"Orders with id '{id}' not found.");
 
             //return _mapper.Map<TopicDto>(topic);
             return Ok(_mapper.Map<OrderDto>(topic));
@@ -55,10 +57,11 @@ namespace Saitynas1Lab.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = DemoRestUserRoles.Admin)]
         public async Task<ActionResult<OrderDto>> Put(int id, UpdateOrderDto topicDto)
         {
             var order = await _ordersRepository.Get(id);
-            if (order == null) return NotFound($"Topic with id '{id}' not found.");
+            if (order == null) return NotFound($"Orders with id '{id}' not found.");
 
             //topic.Name = topicDto.Name;
             _mapper.Map(topicDto, order);
@@ -70,10 +73,11 @@ namespace Saitynas1Lab.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = DemoRestUserRoles.Admin)]
         public async Task<ActionResult<OrderDto>> Delete(int id)
         {
             var post = await _ordersRepository.Get(id);
-            if (post == null) return NotFound($"Topic with id '{id}' not found.");
+            if (post == null) return NotFound($"Orders with id '{id}' not found.");
 
             await _ordersRepository.Delete(post);
 
